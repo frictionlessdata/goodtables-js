@@ -1,6 +1,6 @@
 var _ = require('underscore');
 var chai = require('chai');
-var Goodtables = require('./index');
+var GoodTables = require('./');
 var Promise = require('promise-polyfill');
 var request = require('superagent');
 var should = require('chai').should();
@@ -63,12 +63,12 @@ var INVALID_RESPONSE = {
 
 chai.use(spies);
 
-describe('Goodtables API wrapper', function() {
+describe('GoodTables API wrapper', function() {
   it('throw error if data file is not passed in params', function(done, err) {
     if(err) done(err);
 
     try {
-      (new Goodtables()).run();
+      (new GoodTables()).run();
     } catch(exception) {
       exception.message.should.be.not.empty;
       exception.message.should.be.a('string');
@@ -95,10 +95,10 @@ describe('Goodtables API wrapper', function() {
 
     spyGet = chai.spy.on(request, 'get');
     spyPost = chai.spy.on(request, 'post');
-    goodtables = new Goodtables({method: 'get'});
+    goodtables = new GoodTables({method: 'get'});
 
     goodtables.run('data').then(function() {
-      goodtables = new Goodtables({method: 'post'});
+      goodtables = new GoodTables({method: 'post'});
 
       goodtables.run('data').then(function() {
         spyGet.should.have.been.called();
@@ -131,7 +131,7 @@ describe('Goodtables API wrapper', function() {
       pattern: '.*'
     }]);
 
-    (new Goodtables()).run('data');
+    (new GoodTables()).run('data');
   });
 
   it('return Promise object', function(done, err) {
@@ -143,7 +143,7 @@ describe('Goodtables API wrapper', function() {
       pattern: '.*'
     }]);
 
-    (new Goodtables()).run('data').should.be.an.instanceOf(Promise);
+    (new GoodTables()).run('data').should.be.an.instanceOf(Promise);
     done();
   });
 
@@ -156,7 +156,7 @@ describe('Goodtables API wrapper', function() {
       pattern: '.*'
     }]);
 
-    (new Goodtables()).run('data').catch(function(E) { E.should.be.a('string'); done(); });
+    (new GoodTables()).run('data').catch(function(E) { E.should.be.a('string'); done(); });
   });
 
   it('validate correct data', function(done, err) {
@@ -168,7 +168,7 @@ describe('Goodtables API wrapper', function() {
       pattern: '.*'
     }]);
 
-    (new Goodtables()).run('data').then(function(VR) { VR.isValid().should.be.true; done(); });
+    (new GoodTables()).run('data').then(function(VR) { VR.isValid().should.be.true; done(); });
   });
 
   it('invalidate incorrect data', function(done, err) {
@@ -180,6 +180,6 @@ describe('Goodtables API wrapper', function() {
       pattern: '.*'
     }]);
 
-    (new Goodtables()).run('data').then(function(VR) { VR.isValid().should.be.false; done(); });
+    (new GoodTables()).run('data').then(function(VR) { VR.isValid().should.be.false; done(); });
   });
 });

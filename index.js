@@ -1,12 +1,10 @@
 var _ = require('underscore');
-var API_URL = 'http://goodtables.okfnlabs.org/api/';
 var Promise = require('promise-polyfill');
 var request = require('superagent');
-
+var API_URL = 'http://goodtables.okfnlabs.org/api/';
 
 function ValidationReport(report) {
   var errors = _.where(report.results, {result_level: 'error'});
-
 
   this.isValid = function() { return !Boolean(errors.length); }
   this.getValidationErrors = function() { return errors; }
