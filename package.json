@@ -1,7 +1,13 @@
 {
-  "name": "goodtables-js",
+  "name": "goodtables",
   "version": "0.1.0",
-  "description": "",
+  "description": "An API wrapper for a Good Tables web service. Good Tables is an open source web service for validating tabular data sources.",
+  "keywords": [
+    "data package",
+    "frictionless data",
+    "open data",
+    "open knowledge"
+  ],
   "main": "index.js",
   "dependencies": {
     "promise-polyfill": "^2.0.2",
@@ -9,10 +15,38 @@
     "underscore": "^1.8.3"
   },
   "devDependencies": {
+    "chai": "^3.0.0",
+    "chai-spies": "^0.6.0",
+    "mocha": "^2.2.5",
+    "query-string": "^2.3.0",
+    "superagent-mock": "^1.2.0"
   },
   "scripts": {
     "test": "mocha ./"
   },
   "author": "Open Knowledge",
+  "contributors": [
+    {
+      "name": "Paul Walsh",
+      "email": "paulywalsh@gmail.com",
+      "url": "http://pwalsh.me/"
+    },
+    {
+      "name": "Artem Rudenko",
+      "email": "",
+      "url": ""
+    },
+    {
+      "name": "Alexey Kislyakov",
+      "email": "",
+      "url": ""
+    }
+  ],
+  "homepage": "https://github.com/okfn/goodtables-js",
+  "bugs": "https://github.com/okfn/goodtables-js/issues",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/okfn/goodtables-js.git"
+  },
   "license": "MIT"
 }
