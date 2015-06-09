@@ -5,6 +5,9 @@ var API_URL = 'http://goodtables.okfnlabs.org/api/';
 
 
 function ValidationReport(report, options) {
+  this.rawResults = report.results;
+  this.headers = report.meta.headers;
+
   if(options.isGrouped)
     // Grouped report structure
     this.errors = _.reduce(report.results, function(R, V) {
@@ -20,8 +23,10 @@ function ValidationReport(report, options) {
   return this;
 }
 
-ValidationReport.prototype.isValid = function() { return !Boolean(this.errors.length); }
+ValidationReport.prototype.getHeaders = function() { return this.headers; }
+ValidationReport.prototype.getSortedByRows = function() { return this.rawResults; }
 ValidationReport.prototype.getValidationErrors = function() { return this.errors; }
+ValidationReport.prototype.isValid = function() { return !Boolean(this.errors.length); }
 
 module.exports = function(options) {
   // Provide default values for most params
