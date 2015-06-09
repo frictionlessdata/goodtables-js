@@ -3,6 +3,7 @@ var Promise = require('promise-polyfill');
 var request = require('superagent');
 var API_URL = 'http://goodtables.okfnlabs.org/api/';
 
+
 function ValidationReport(report, options) {
   var errors;
 
@@ -47,7 +48,10 @@ module.exports = function(options) {
     return new Promise((function(RS, RJ) {
       request[this.options.method](API_URL + 'run')
         // Provide request data with .query() in case of GET, otherwise use .send()
-        [this.options.method == 'get' ? 'query' : 'send'](_.extend(_.omit(this.options, 'method'), {data: data, schema: schema || {}}))
+        [this.options.method == 'get' ? 'query' : 'send'](_.extend(
+          _.omit(this.options, 'method'),
+          {data: data, schema: schema || {}}
+        ))
 
         .end((function(E, R) {
           if(E)
