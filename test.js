@@ -290,8 +290,17 @@ describe('GoodTables API wrapper', function() {
   it('respect report_type param', function(done, err) {
     if(err) done(err);
 
-    assert();
-    done();
+    require('superagent-mock')(request, [{
+      callback: function (match, data) { return {text: data}; },
+      fixtures: function (match, params) { return JSON.stringify(INVALID_GROUPED_RESPONSE); },
+      pattern: '.*'
+    }]);
+
+    (new GoodTables({report_type: 'grouped'})).run('data').then(function(VR) {
+      VR.isValid().should.be.false;
+      VR.getValidationErrors().length.should.equal(3);
+      done();
+    });
   });
 
   it('provide default values for all params', function(done, err) {
@@ -305,6 +314,7 @@ describe('GoodTables API wrapper', function() {
           format           : 'csv',
           ignore_empty_rows: 'false',
           report_limit     : '1000',
+          report_type      : 'basic',
           row_limit        : '20000'
         }).should.be.true;
 

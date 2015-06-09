@@ -3,8 +3,21 @@ var Promise = require('promise-polyfill');
 var request = require('superagent');
 var API_URL = 'http://goodtables.okfnlabs.org/api/';
 
-function ValidationReport(report) {
-  var errors = _.where(report.results, {result_level: 'error'});
+function ValidationReport(report, options) {
+  var errors;
+
+
+  if(options.isGrouped)
+    // Grouped report structure
+    errors = _.reduce(report.results, function(R, V) {
+      return R.concat(_.chain(V)
+        .map(function(V, K) { return _.where(V.results, {result_level: 'error'}) })
+        .flatten()
+        .value());
+    }, []);
+  else
+    // Basic report structure
+    errors = _.where(report.results, {result_level: 'error'});
 
   this.isValid = function() { return !Boolean(errors.length); }
   this.getValidationErrors = function() { return errors; }
@@ -19,6 +32,7 @@ module.exports = function(options) {
     ignore_empty_rows: false,
     method           : 'get',
     report_limit     : 1000,
+    report_type      : 'basic',
     row_limit        : 20000
   }, options);
 
@@ -35,12 +49,12 @@ module.exports = function(options) {
         // Provide request data with .query() in case of GET, otherwise use .send()
         [this.options.method == 'get' ? 'query' : 'send'](_.extend(_.omit(this.options, 'method'), {data: data, schema: schema || {}}))
 
-        .end(function(E, R) {
+        .end((function(E, R) {
           if(E)
             RJ('API request failed: ' + E);
 
-          RS(new ValidationReport(JSON.parse(R.text).report));
-        });
+          RS(new ValidationReport(JSON.parse(R.text).report, {isGrouped: this.options.report_type == 'grouped'}));
+        }).bind(this));
     }).bind(this));
   }).bind(this);
 
