@@ -55,7 +55,7 @@ module.exports = function(options) {
           if(E)
             RJ('API request failed: ' + E);
 
-          RS(new ValidationReport(JSON.parse(R.text).report, {isGrouped: this.options.report_type == 'grouped'}));
+          RS(new ValidationReport(JSON.parse(R.text).report, {isGrouped: this.options.report_type === 'grouped'}));
         }).bind(this));
     }).bind(this));
   }).bind(this);
