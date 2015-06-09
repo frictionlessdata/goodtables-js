@@ -24,7 +24,7 @@ function ValidationReport(report, options) {
 }
 
 ValidationReport.prototype.getHeaders = function() { return this.headers; }
-ValidationReport.prototype.getSortedByRows = function() { return this.rawResults; }
+ValidationReport.prototype.getGroupedByRows = function() { return this.rawResults; }
 ValidationReport.prototype.getValidationErrors = function() { return this.errors; }
 ValidationReport.prototype.isValid = function() { return !Boolean(this.errors.length); }
 
