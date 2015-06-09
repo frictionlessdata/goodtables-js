@@ -5,12 +5,9 @@ var API_URL = 'http://goodtables.okfnlabs.org/api/';
 
 
 function ValidationReport(report, options) {
-  var errors;
-
-
   if(options.isGrouped)
     // Grouped report structure
-    errors = _.reduce(report.results, function(R, V) {
+    this.errors = _.reduce(report.results, function(R, V) {
       return R.concat(_.chain(V)
         .map(function(V, K) { return _.where(V.results, {result_level: 'error'}) })
         .flatten()
@@ -18,12 +15,13 @@ function ValidationReport(report, options) {
     }, []);
   else
     // Basic report structure
-    errors = _.where(report.results, {result_level: 'error'});
+    this.errors = _.where(report.results, {result_level: 'error'});
 
-  this.isValid = function() { return !Boolean(errors.length); }
-  this.getValidationErrors = function() { return errors; }
   return this;
 }
+
+ValidationReport.prototype.isValid = function() { return !Boolean(this.errors.length); }
+ValidationReport.prototype.getValidationErrors = function() { return this.errors; }
 
 module.exports = function(options) {
   // Provide default values for most params
