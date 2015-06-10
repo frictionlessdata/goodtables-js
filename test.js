@@ -239,7 +239,6 @@ var INVALID_RESPONSE = {
 };
 
 
-
 chai.use(spies);
 
 describe('GoodTables API wrapper', function() {
