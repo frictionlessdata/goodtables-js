@@ -28,7 +28,7 @@ ValidationReport.prototype.getGroupedByRows = function() { return this.rawResult
 ValidationReport.prototype.getValidationErrors = function() { return this.errors; }
 ValidationReport.prototype.isValid = function() { return !Boolean(this.errors.length); }
 
-module.exports = function(options) {
+module.exports = function(options, userEndpointURL) {
   // Provide default values for most params
   this.options = _.extend({
     fail_fast        : true,
@@ -49,7 +49,7 @@ module.exports = function(options) {
       throw new Error('You need to provide data file to validate');
 
     return new Promise((function(RS, RJ) {
-      request[this.options.method](API_URL + 'run')
+      request[this.options.method](userEndpointURL || API_URL + 'run')
         // Provide request data with .query() in case of GET, otherwise use .send()
         [this.options.method == 'get' ? 'query' : 'send'](_.extend(
           _.omit(this.options, 'method'),
