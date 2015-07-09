@@ -1,5 +1,5 @@
 var _ = require('underscore');
-var Promise = require('promise-polyfill');
+var Promise = require('bluebird');
 var request = require('superagent');
 var API_URL = 'http://goodtables.okfnlabs.org/api/';
 
