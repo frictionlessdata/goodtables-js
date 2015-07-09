@@ -10,7 +10,7 @@
   ],
   "main": "index.js",
   "dependencies": {
-    "promise-polyfill": "^2.0.2",
+	"bluebird": "^2.9.30",
     "superagent": "^1.2.0",
     "underscore": "^1.8.3"
   },
