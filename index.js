@@ -53,7 +53,7 @@ module.exports = function(options, userEndpointURL) {
         // Provide request data with .query() in case of GET, otherwise use .send()
         [this.options.method == 'get' ? 'query' : 'send'](_.extend(
           _.omit(this.options, 'method'),
-          {data: data, schema: schema || {}}
+          _.extend({data: data}, schema && {schema: schema})
         ))
 
         .end((function(E, R) {
