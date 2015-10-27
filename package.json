@@ -1,6 +1,6 @@
 {
   "name": "goodtables",
-  "version": "0.1.2",
+  "version": "0.2.0",
   "description": "An API wrapper for a Good Tables web service. Good Tables is an open source web service for validating tabular data sources.",
   "keywords": [
     "data package",
@@ -10,8 +10,9 @@
   ],
   "main": "index.js",
   "dependencies": {
-	"bluebird": "^2.9.30",
-    "superagent": "^1.2.0",
+    "bluebird": "^2.9.30",
+    "es6-promise": "^3.0.2",
+    "isomorphic-fetch": "^2.2.0",
     "underscore": "^1.8.3"
   },
   "devDependencies": {
@@ -19,7 +20,7 @@
     "chai-spies": "^0.6.0",
     "mocha": "^2.2.5",
     "query-string": "^2.3.0",
-    "superagent-mock": "^1.2.0"
+    "fetch-mock": "^2.2.3"
   },
   "scripts": {
     "test": "mocha ./"
