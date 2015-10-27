@@ -29,7 +29,7 @@ ValidationReport.prototype.getGroupedByRows = function() { return this.rawResult
 ValidationReport.prototype.getValidationErrors = function() { return this.errors; }
 ValidationReport.prototype.isValid = function() { return !Boolean(this.errors.length); }
 
-function converToPostParams(params) {
+function converToGetParams(params) {
   return _.map(params, function(value, key){
     return encodeURIComponent(key)+'='+encodeURIComponent(value);
   }).join('&');
@@ -57,16 +57,21 @@ module.exports = function(options, userEndpointURL) {
     }
 
     return new Promise((function(RS, RJ) {
-      var params = converToPostParams(
-          _.extend(_.omit(this.options, 'method'), _.extend({data: data}, schema && {schema: schema}))
-      );
+      var params = _.extend(_.omit(this.options, 'method'), _.extend({data: data}, schema && {schema: schema}));
       var url = userEndpointURL || API_URL + 'run';
       var options = {};
       if (this.options.method == 'get'){
-        url = url + '?' + params;
+        url = url + '?' + converToGetParams(params);
         options = {method: this.options.method.toUpperCase()};
       } else {
-        options = {method: this.options.method.toUpperCase(), body: params};
+        options = {
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+          },
+          method: this.options.method.toUpperCase(),
+          body: JSON.stringify(params)
+        };
       }
 
       fetch(url, options)
