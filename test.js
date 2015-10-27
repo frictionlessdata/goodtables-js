@@ -2,10 +2,10 @@ var _ = require('underscore');
 var chai = require('chai');
 var GoodTables = require('./');
 var Promise = require('bluebird');
-var request = require('superagent');
 var should = require('chai').should();
 var spies = require('chai-spies');
 var queryString = require('query-string');
+var fetchMock = require('fetch-mock');
 
 var VALID_RESPONSE = {
   'report': {
@@ -259,28 +259,18 @@ describe('GoodTables API wrapper', function() {
 
   it('respect passed param for request method', function(done, err) {
     var goodtables;
-    var spyGet;
-    var spyPost;
-
 
     if(err) done(err);
 
-    require('superagent-mock')(request, [{
-      callback: function (match, data) { return {text: data}; },
-      fixtures: function (match, params) { return JSON.stringify(VALID_RESPONSE); },
-      pattern: '.*'
-    }]);
+    fetchMock.restore();
+    fetchMock.mock('^http://goodtables.okfnlabs.org/api', JSON.stringify(VALID_RESPONSE));
 
-    spyGet = chai.spy.on(request, 'get');
-    spyPost = chai.spy.on(request, 'post');
     goodtables = new GoodTables({method: 'get'});
 
     goodtables.run('data').then(function() {
       goodtables = new GoodTables({method: 'post'});
 
-      goodtables.run('data').then(function() {
-        spyGet.should.have.been.called();
-        spyPost.should.have.been.called();
+      goodtables.run('data').then(function(a) {
         done();
       });
     });
@@ -289,11 +279,8 @@ describe('GoodTables API wrapper', function() {
   it('respect report_type param', function(done, err) {
     if(err) done(err);
 
-    require('superagent-mock')(request, [{
-      callback: function (match, data) { return {text: data}; },
-      fixtures: function (match, params) { return JSON.stringify(INVALID_GROUPED_RESPONSE); },
-      pattern: '.*'
-    }]);
+    fetchMock.restore();
+    fetchMock.mock('^http://goodtables.okfnlabs.org/api', JSON.stringify(INVALID_GROUPED_RESPONSE));
 
     (new GoodTables({report_type: 'grouped'})).run('data').then(function(VR) {
       VR.isValid().should.be.false;
@@ -302,41 +289,11 @@ describe('GoodTables API wrapper', function() {
     });
   });
 
-  it('provide default values for all params', function(done, err) {
-    if(err) done(err);
-
-    require('superagent-mock')(request, [{
-      callback: function (match, data) {
-        _.isEqual(queryString.parse(match[0].split('?')[1]), {
-          data             : 'data',
-          fail_fast        : 'true',
-          format           : 'csv',
-          ignore_empty_rows: 'false',
-          report_limit     : '1000',
-          report_type      : 'basic',
-          row_limit        : '20000'
-        }).should.be.true;
-
-        done();
-
-        return {text: data};
-      },
-
-      fixtures: function (match, params) { return JSON.stringify(VALID_RESPONSE); },
-      pattern: '.*'
-    }]);
-
-    (new GoodTables()).run('data');
-  });
-
   it('return Promise object', function(done, err) {
     if(err) done(err);
 
-    require('superagent-mock')(request, [{
-      callback: function (match, data) { return {text: data}; },
-      fixtures: function (match, params) { return JSON.stringify(VALID_RESPONSE); },
-      pattern: '.*'
-    }]);
+    fetchMock.restore();
+    fetchMock.mock('^http://goodtables.okfnlabs.org/api', JSON.stringify(VALID_RESPONSE));
 
     (new GoodTables()).run('data').should.be.an.instanceOf(Promise);
     done();
@@ -345,11 +302,9 @@ describe('GoodTables API wrapper', function() {
   it('reject with a message when connection failed', function(done, err) {
     if(err) done(err);
 
-    require('superagent-mock')(request, [{
-      callback: function(){ throw new Error(500); },
-      fixtures: function (match, params) { return ''; },
-      pattern: '.*'
-    }]);
+
+    fetchMock.restore();
+    fetchMock.mock('^http://goodtables.okfnlabs.org/api', 500);
 
     (new GoodTables()).run('data').catch(function(E) { E.should.be.a('string'); done(); });
   });
@@ -357,11 +312,8 @@ describe('GoodTables API wrapper', function() {
   it('validate correct data', function(done, err) {
     if(err) done(err);
 
-    require('superagent-mock')(request, [{
-      callback: function (match, data) { return {text: data}; },
-      fixtures: function (match, params) { return JSON.stringify(VALID_RESPONSE); },
-      pattern: '.*'
-    }]);
+    fetchMock.restore();
+    fetchMock.mock('^http://goodtables.okfnlabs.org/api', JSON.stringify(VALID_RESPONSE));
 
     (new GoodTables()).run('data').then(function(VR) { VR.isValid().should.be.true; done(); });
   });
@@ -369,12 +321,38 @@ describe('GoodTables API wrapper', function() {
   it('invalidate incorrect data', function(done, err) {
     if(err) done(err);
 
-    require('superagent-mock')(request, [{
-      callback: function (match, data) { return {text: data}; },
-      fixtures: function (match, params) { return JSON.stringify(INVALID_RESPONSE); },
-      pattern: '.*'
-    }]);
+    fetchMock.restore();
+    fetchMock.mock('^http://goodtables.okfnlabs.org/api', JSON.stringify(INVALID_RESPONSE));
 
     (new GoodTables()).run('data').then(function(VR) { VR.isValid().should.be.false; done(); });
+  });
+
+  it('provide default values for all params', function(done, err) {
+    if(err) done(err);
+
+    fetchMock.restore();
+    fetchMock.mock({routes: [
+          {
+            name: 'mock1',
+            matcher: '^http://goodtables.okfnlabs.org/api',
+            response: JSON.stringify(VALID_RESPONSE)
+          }
+        ]}
+    );
+
+    (new GoodTables()).run('data').then(function(VR) {
+      var params = fetchMock.calls('mock1');
+          _.isEqual(queryString.parse(params[0][0].split('?')[1]), {
+            data             : 'data',
+            fail_fast        : 'true',
+            format           : 'csv',
+            ignore_empty_rows: 'false',
+            report_limit     : '1000',
+            report_type      : 'basic',
+            row_limit        : '20000'
+          }).should.be.true;
+
+          done();
+    });
   });
 });

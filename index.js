@@ -1,7 +1,8 @@
 var _ = require('underscore');
 var Promise = require('bluebird');
-var request = require('superagent');
 var API_URL = 'http://goodtables.okfnlabs.org/api/';
+require('es6-promise').polyfill();
+require('isomorphic-fetch');
 
 
 function ValidationReport(report, options) {
@@ -28,6 +29,12 @@ ValidationReport.prototype.getGroupedByRows = function() { return this.rawResult
 ValidationReport.prototype.getValidationErrors = function() { return this.errors; }
 ValidationReport.prototype.isValid = function() { return !Boolean(this.errors.length); }
 
+function converToPostParams(params) {
+  return _.map(params, function(value, key){
+    return encodeURIComponent(key)+'='+encodeURIComponent(value);
+  }).join('&');
+}
+
 module.exports = function(options, userEndpointURL) {
   // Provide default values for most params
   this.options = _.extend({
@@ -45,23 +52,37 @@ module.exports = function(options, userEndpointURL) {
 
   // /api/run — Validation Runner
   this.run = (function(data, schema) {
-    if(!data)
+    if(!data) {
       throw new Error('You need to provide data file to validate');
+    }
 
     return new Promise((function(RS, RJ) {
-      request[this.options.method](userEndpointURL || API_URL + 'run')
-        // Provide request data with .query() in case of GET, otherwise use .send()
-        [this.options.method == 'get' ? 'query' : 'send'](_.extend(
-          _.omit(this.options, 'method'),
-          _.extend({data: data}, schema && {schema: schema})
-        ))
+      var params = converToPostParams(
+          _.extend(_.omit(this.options, 'method'), _.extend({data: data}, schema && {schema: schema}))
+      );
+      var url = userEndpointURL || API_URL + 'run';
+      var options = {};
+      if (this.options.method == 'get'){
+        url = url + '?' + params;
+        options = {method: this.options.method.toUpperCase()};
+      } else {
+        options = {method: this.options.method.toUpperCase(), body: params};
+      }
 
-        .end((function(E, R) {
-          if(E)
-            RJ('API request failed: ' + E);
-
-          RS(new ValidationReport(JSON.parse(R.text).report, {isGrouped: this.options.report_type === 'grouped'}));
-        }).bind(this));
+      fetch(url, options)
+          .then(
+            function (res){
+              if (res.status != 200) {
+                RJ('API request failed: ' + res.status);
+              }
+              return res.text();
+            }
+          ).then(
+            (function (text) {
+//              console.log(text);
+                RS(new ValidationReport(JSON.parse(text).report, {isGrouped: this.options.report_type === 'grouped'}));
+            }).bind(this)
+          );
     }).bind(this));
   }).bind(this);
 
