@@ -5,7 +5,7 @@ var Promise = require('bluebird');
 var should = require('chai').should();
 var spies = require('chai-spies');
 var queryString = require('query-string');
-var fetchMock = require('fetch-mock');
+var fetchMock = require('fetch-mock/src/server');
 
 var VALID_RESPONSE = {
   'report': {
