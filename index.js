@@ -35,8 +35,9 @@ function converToGetParams(params) {
   }).join('&');
 }
 
-module.exports = function(options, userEndpointURL) {
+var GoodTables = function(options, userEndpointURL) {
   // Provide default values for most params
+  this.userEndpointURL = userEndpointURL;
   this.options = _.extend({
     fail_fast        : true,
     format           : 'csv',
@@ -50,46 +51,46 @@ module.exports = function(options, userEndpointURL) {
   if(!_.contains(['get', 'post'], this.options.method))
     throw new Error('.method should be "get" or "post"');
 
-  // /api/run — Validation Runner
-  this.run = (function(data, schema) {
-    if(!data) {
-      throw new Error('You need to provide data file to validate');
-    }
-
-    return new Promise((function(RS, RJ) {
-      var params = _.extend(_.omit(this.options, 'method'), _.extend({data: data}, schema && {schema: schema}));
-      var url = userEndpointURL || API_URL + 'run';
-      var options = {};
-      if (this.options.method == 'get'){
-        url = url + '?' + converToGetParams(params);
-        options = {method: this.options.method.toUpperCase()};
-      } else {
-        options = {
-          headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json'
-          },
-          method: this.options.method.toUpperCase(),
-          body: JSON.stringify(params)
-        };
-      }
-
-      fetch(url, options)
-          .then(
-            function (res){
-              if (res.status != 200) {
-                RJ('API request failed: ' + res.status);
-              }
-              return res.text();
-            }
-          ).then(
-            (function (text) {
-//              console.log(text);
-                RS(new ValidationReport(JSON.parse(text).report, {isGrouped: this.options.report_type === 'grouped'}));
-            }).bind(this)
-          );
-    }).bind(this));
-  }).bind(this);
-
   return this;
 }
+
+GoodTables.prototype.run = function (data, schema) {
+  if(!data) {
+    throw new Error('You need to provide data file to validate');
+  }
+
+  return new Promise((function(RS, RJ) {
+    var params = _.extend(_.omit(this.options, 'method'), _.extend({data: data}, schema && {schema: schema}));
+    var url = this.userEndpointURL || API_URL + 'run';
+    var options = {};
+    if (this.options.method == 'get'){
+      url = url + '?' + converToGetParams(params);
+      options = {method: this.options.method.toUpperCase()};
+    } else {
+      options = {
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+        method: this.options.method.toUpperCase(),
+        body: JSON.stringify(params)
+      };
+    }
+
+    fetch(url, options)
+      .then(
+      function (res){
+        if (res.status != 200) {
+          RJ('API request failed: ' + res.status);
+        }
+        return res.text();
+      }
+    ).then(
+      (function (text) {
+        RS(new ValidationReport(JSON.parse(text).report, {isGrouped: this.options.report_type === 'grouped'}));
+      }).bind(this)
+    );
+  }).bind(this));
+}
+
+module.exports = GoodTables;
