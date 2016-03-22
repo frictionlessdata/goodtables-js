@@ -8,6 +8,7 @@ require('isomorphic-fetch');
 function ValidationReport(report, options) {
   this.rawResults = report.results;
   this.headers = report.meta.headers;
+  this.encoding = report.meta.encoding;
 
   if(options.isGrouped)
     // Grouped report structure
@@ -25,6 +26,7 @@ function ValidationReport(report, options) {
 }
 
 ValidationReport.prototype.getHeaders = function() { return this.headers; }
+ValidationReport.prototype.getEncoding = function() { return this.encoding; }
 ValidationReport.prototype.getGroupedByRows = function() { return this.rawResults; }
 ValidationReport.prototype.getValidationErrors = function() { return this.errors; }
 ValidationReport.prototype.isValid = function() { return !Boolean(this.errors.length); }
