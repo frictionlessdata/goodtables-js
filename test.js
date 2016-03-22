@@ -24,7 +24,8 @@ var VALID_RESPONSE = {
         'header_index': 0,
         'headers': ['123'],
         'name': 'Pipeline',
-        'row_count': 1
+        'row_count': 1,
+        'encoding': 'iso-8859-1'
     },
 
     'results': []
@@ -315,7 +316,11 @@ describe('GoodTables API wrapper', function() {
     fetchMock.restore();
     fetchMock.mock('^http://goodtables.okfnlabs.org/api', JSON.stringify(VALID_RESPONSE));
 
-    (new GoodTables()).run('data').then(function(VR) { VR.isValid().should.be.true; done(); });
+    (new GoodTables()).run('data').then(function(VR) { 
+      VR.isValid().should.be.true; 
+      VR.getEncoding().should.equal('iso-8859-1');
+      done(); 
+    });
   });
 
   it('invalidate incorrect data', function(done, err) {
