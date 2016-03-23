@@ -1,6 +1,7 @@
 var _ = require('underscore');
 var Promise = require('bluebird');
 var API_URL = 'http://goodtables.okfnlabs.org/api/';
+var base64 = require('base64-js');
 require('es6-promise').polyfill();
 require('isomorphic-fetch');
 
@@ -31,7 +32,7 @@ ValidationReport.prototype.getGroupedByRows = function() { return this.rawResult
 ValidationReport.prototype.getValidationErrors = function() { return this.errors; }
 ValidationReport.prototype.isValid = function() { return !Boolean(this.errors.length); }
 
-function converToGetParams(params) {
+function convertToGetParams(params) {
   return _.map(params, function(value, key){
     return encodeURIComponent(key)+'='+encodeURIComponent(value);
   }).join('&');
@@ -56,17 +57,27 @@ var GoodTables = function(options, userEndpointURL) {
   return this;
 }
 
-GoodTables.prototype.run = function (data, schema) {
-  if(!data) {
+GoodTables.prototype.run = function (data, schema, data_url) {
+  if(!data && !data_url) {
     throw new Error('You need to provide data file to validate');
   }
 
   return new Promise((function(RS, RJ) {
-    var params = _.extend(_.omit(this.options, 'method'), _.extend({data: data}, schema && {schema: schema}));
+    var params = _.omit(this.options, 'method');
+    if ( schema ) { params.schema = schema; }
+    if ( data ) {
+      if ( data instanceof ArrayBuffer ) {
+        var byteView = new Uint8Array(data);
+        params.data_base64 = base64.fromByteArray(byteView);
+      } else {
+        params.data = data;
+      }
+    }
+    if ( data_url ) { params.data_url = data_url; }
     var url = this.userEndpointURL || API_URL + 'run';
     var options = {};
     if (this.options.method == 'get'){
-      url = url + '?' + converToGetParams(params);
+      url = url + '?' + convertToGetParams(params);
       options = {method: this.options.method.toUpperCase()};
     } else {
       options = {
