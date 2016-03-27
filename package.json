@@ -1,6 +1,6 @@
 {
   "name": "goodtables",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "An API wrapper for a Good Tables web service. Good Tables is an open source web service for validating tabular data sources.",
   "keywords": [
     "data package",
@@ -13,7 +13,8 @@
     "bluebird": "^2.9.30",
     "es6-promise": "^3.0.2",
     "isomorphic-fetch": "^2.2.0",
-    "underscore": "^1.8.3"
+    "underscore": "^1.8.3",
+    "base64-js": "1.1.1"
   },
   "devDependencies": {
     "chai": "^3.0.0",
@@ -45,6 +46,11 @@
       "name": "Alexey Kislyakov",
       "email": "alexey@creony.com",
       "url": "http://ottofeller.com/"
+    },
+    {
+      "name": "Adam Kariv",
+      "email": "adam.kariv@okfn.org",
+      "url": "http://www.openspending.org/"
     }
   ],
   "homepage": "https://github.com/okfn/goodtables-js",
