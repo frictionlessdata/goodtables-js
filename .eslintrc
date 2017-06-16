@@ -78,6 +78,8 @@ rules:
     - off
   space-before-function-paren:
     - off
+  consistent-return:
+    - off
   import/prefer-default-export:
     - off
   import/newline-after-import:

@@ -28,85 +28,32 @@ $ npm install goodtables
 #### CDN
 
 ```html
-<script src="//unpkg.com/tableschema/dist/goodtables.min.js"></script>
+<script src="//unpkg.com/goodtables/dist/goodtables.min.js"></script>
 ```
 
 ### Examples
 
-There are main examples and more are available in [examples](https://github.com/frictionlessdata/tableschema-js/tree/master/examples) directory.
+Code examples in this readme requires `node v8.0+` or proper modern browser . Also you need to wrap code into async function if there is `await` keyword used.
 
 ```js
-import {Schema} from 'tableschema'
-
-const descriptor = {
-  fields: [
-    {name: 'name', type: 'string'},
-    {name: 'age', type: 'integer'},
-  ]
+const source = '<SOURCE_URL>'
+const options = {
+  api_url: 'https://goodtables.io/api',
+  api_token: '<API_TOKEN>',
+  api_source_id: '<API_SOURCE_ID>',
 }
-
-Schema.load(descriptor).then(schema => {
-    schema.getField('age').castValue('21') // 21
-})
+const report = await goodtables.inspect(source, options)
 ```
 
 ## Documentation
 
-### validate
+### inspect
 
-Given a schema as JSON object, `validate` returns `Promise`, which success for a valid Table Schema, or reject with array of errors.
+This function gets a tabular dataset and returns a goodtables `report`.
 
-#### async validate(descriptor)
+#### `async inspect(source, options)`
 
-This funcion is async so it has to be used with `await` keyword or as a `Promise`.
-
-- descriptor (String/Object) - gets schema descriptor (local/remote path or object)
-- (Error[]) - raises list of validation errors for invalid
-- (Boolean) - returns true for valid
-
-List of actions on descriptor:
-- retrieved (if path/url)
-- dereferenced (schema/dialect)
-- expanded (with profile defaults)
-- validated (against table-schema profile)
-
-Let's see on example:
-
-```js
-var validate = require('tableschema').validate;
-var schema = {
-   fields: [
-     {
-       name: 'id',
-       title: '',
-       description: '',
-       type: 'integer',
-       format: 'default'
-     },
-     {
-       name: 'age',
-       title: '',
-       description: '',
-       type: 'integer',
-       format: 'default'
-     },
-     {
-       name: 'name',
-       title: '',
-       description: '',
-       type: 'string',
-       format: 'default'
-     }
-   ]
-};
-
-validate(schema).then(function() {
-  // do something with valid schema here
-}).catch(function(errors) {
-  // uh oh, some validation errors in the errors array
-})
-```
-Note: `validate()` validates whether a **schema** is a validate Table Schema accordingly to the (specifications)[http://schemas.datapackages.org/json-table-schema.json]. It does **not** validate data against a schema.
+...
 
 
 ## Contributing
