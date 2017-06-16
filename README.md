@@ -17,7 +17,7 @@ An API wrapper for a goodtables.io service. goodtables.io is an open source web 
 
 ### Installation
 
-> The package use semantic versioning. It means that major versions  could include breaking changes. It's highly recommended to specify `goodtables` version range in your `package.json` file e.g. `tabulator: ^1.0` which  will be added by default by `npm install --save`.
+The package use semantic versioning. It means that major versions  could include breaking changes. It's highly recommended to specify `goodtables` version range in your `package.json` file e.g. `tabulator: ^1.0` which  will be added by default by `npm install --save`.
 
 #### NPM
 
@@ -33,7 +33,7 @@ $ npm install goodtables
 
 ### Examples
 
-Code examples in this readme requires `node v8.0+` or proper modern browser . Also you need to wrap code into async function if there is `await` keyword used.
+Code examples in this readme requires Node v8.0+ or proper modern browser . Also you need to wrap code into async function if there is `await` keyword used.
 
 ```js
 const source = '<SOURCE_URL>'
