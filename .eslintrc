@@ -80,6 +80,8 @@ rules:
     - off
   consistent-return:
     - off
+  object-property-newline:
+    - off
   import/prefer-default-export:
     - off
   import/newline-after-import:

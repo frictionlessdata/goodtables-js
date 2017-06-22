@@ -1,9 +1,7 @@
 require('babel-polyfill')
-const inspect = require('./inspect').inspect
+const {validate} = require('./validate')
 
 
 // Module API
 
-module.exports = {
-  inspect,
-}
+module.exports.validate = validate

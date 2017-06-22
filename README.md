@@ -1,4 +1,4 @@
-# goodtables-js
+# goodtables.js
 
 [![Travis](https://travis-ci.org/frictionlessdata/tableschema-js.svg?branch=master)](https://travis-ci.org/frictionlessdata/goodtables-js)
 [![Coveralls](https://coveralls.io/repos/github/frictionlessdata/goodtables-js/badge.svg?branch=master)](https://coveralls.io/github/frictionlessdata/goodtables-js?branch=master)
@@ -9,15 +9,14 @@ An API wrapper for a goodtables.io service. goodtables.io is an open source web 
 
 ## Features
 
- - `inspect` function to inspect tabular data and output a `goodtables` report
- - `validate` function to inspect tabular data an throw an error on invalid
- - `goodtables.io API` as a primary backend
+ - `validate` function to validate tabular data and output a `goodtables` report
+ - `goodtables.io/api` as a cloud backend
 
 ## Getting started
 
 ### Installation
 
-The package use semantic versioning. It means that major versions  could include breaking changes. It's highly recommended to specify `goodtables` version range in your `package.json` file e.g. `tabulator: ^1.0` which  will be added by default by `npm install --save`.
+The package use semantic versioning. It means that major versions  could include breaking changes. It's highly recommended to specify `goodtables` version range in your `package.json` file e.g. `goodtables: ^1.0` which  will be added by default by `npm install --save`.
 
 #### NPM
 
@@ -33,28 +32,44 @@ $ npm install goodtables
 
 ### Examples
 
-Code examples in this readme requires Node v8.0+ or proper modern browser . Also you need to wrap code into async function if there is `await` keyword used.
+Code examples in this readme requires Node v8.0+ or proper modern browser . Also you have to wrap code into async function if there is `await` keyword used.
 
 ```js
 const source = '<SOURCE_URL>'
 const options = {
-  api_url: 'https://goodtables.io/api',
-  api_token: '<API_TOKEN>',
-  api_source_id: '<API_SOURCE_ID>',
+  apiUrl: 'https://goodtables.io/api',
+  apiToken: '<API_TOKEN>',
+  apiSourceId: '<API_SOURCE_ID>',
 }
-const report = await goodtables.inspect(source, options)
+const report = await goodtables.validate(source, options)
 ```
 
 ## Documentation
 
-### inspect
+### Validate
 
-This function gets a tabular dataset and returns a goodtables `report`.
+This function gets a tabular dataset and returns a goodtables report.
 
-#### `async inspect(source, options)`
+#### `async validate(source, options)`
 
-...
-
+- `source (String/Object)`
+- `options`
+  - [API]
+  - `apiUrl`
+  - `apiToken`
+  - `apiSourceId`
+  - [Validation]
+  - `checks`
+  - `errorLimit`
+  - `tableLimit`
+  - `rowLimit`
+  - `inferSchema`
+  - `inferFields`
+  - `orderFields`
+  - [Source]
+  - `preset`
+  - `schema`
+- `(Object)` - returns a goodtables report
 
 ## Contributing
 
@@ -72,7 +87,7 @@ Here described only breaking and the most important changes. The full changelog 
 
 ### v0.4
 
-This version includes breaking changes and now uses `goodtables.io/api` as a main backend.
+This version includes breaking changes and now uses `goodtables.io/api` as a backend.
 
 ### [v0.3](https://github.com/frictionlessdata/goodtables-js/tree/v0.3.0)
 
