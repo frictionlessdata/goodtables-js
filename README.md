@@ -71,6 +71,14 @@ This function gets a tabular dataset and returns a goodtables report.
   - `schema`
 - `(Object)` - returns a goodtables report
 
+### Spec
+
+Data quality spec is shipped with the library.
+
+#### `spec`
+
+- `(Object)` - returns data quality spec
+
 ## Contributing
 
 The project follows the [Open Knowledge International coding standards](https://github.com/okfn/coding-standards). There are common commands to work with the project:

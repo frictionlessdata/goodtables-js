@@ -5,6 +5,7 @@ const AxiosMockAdapter = require('axios-mock-adapter')
 const {validate} = require('../src')
 const {catchError} = require('./helpers')
 
+
 // Tests
 
 describe('validate', () => {
