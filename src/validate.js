@@ -30,10 +30,9 @@ module.exports.validate = async (source, options) => {
   const orderFields = pop(options, 'orderFields')
 
   // Prepare source
-  if (isString(source)) {
-    options = mapKeys(options, (value, key) => snakeCase(key))
-    source = [Object.assign(options, {source})]
-  }
+  if (isString(source)) source = [Object.assign(options, {source})]
+  source = source.map(item => mapKeys(item, (value, key) => snakeCase(key)))
+  console.log(source)
 
   // Prepare settings
   let settings = {checks,
