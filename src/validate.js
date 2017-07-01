@@ -32,7 +32,6 @@ module.exports.validate = async (source, options) => {
   // Prepare source
   if (isString(source)) source = [Object.assign(options, {source})]
   source = source.map(item => mapKeys(item, (value, key) => snakeCase(key)))
-  console.log(source)
 
   // Prepare settings
   let settings = {checks,
