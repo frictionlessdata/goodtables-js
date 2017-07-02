@@ -76,6 +76,8 @@ rules:
     - off
   no-prototype-builtins:
     - off
+  arrow-body-style:
+    - off
   space-before-function-paren:
     - off
   consistent-return:
