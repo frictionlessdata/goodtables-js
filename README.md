@@ -101,7 +101,12 @@ $ npm run test
 
 Here described only breaking and the most important changes. The full changelog could be found in nicely formatted [commit history](https://github.com/frictionlessdata/goodtables-js/commits/master).
 
-### v0.5
+### v0.6
+
+New provisional API added:
+- published `ApiClient` class
+
+### [v0.5](https://github.com/frictionlessdata/goodtables-js/tree/v0.5.0)
 
 New API added:
 - published data quality spec as `spec`
