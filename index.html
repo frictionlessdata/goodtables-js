@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>goodtables-js</title>
+  </head>
+  <body>
+    <form action="">
+      File:
+      <input type="file" id="file" />
+    </form>
+    <script src="dist/goodtables.js"></script>
+    <script>
+      const client = new goodtables.ApiClient({
+        apiUrl: 'http://localhost:5000/api',
+        apiToken: 'E5AD257755E51A9548D1EAD52D4FC0963D8433A9',
+        apiSourceId: 'fe174829-b953-4ce9-b224-cc2a92fbbc7d',
+      })
+    </script>
+  </body>
+</html>

@@ -23,6 +23,7 @@
     "build:dist": "webpack --progress --hide-modules",
     "build:dist-min": "NODE_ENV=production webpack --progress --hide-modules",
     "coveralls": "cat ./coverage/lcov.info | coveralls",
+    "dev": "webpack-dev-server --open --inline --hot",
     "lint": "eslint src test",
     "prepublish": "npm run build",
     "prepush": "npm run test",

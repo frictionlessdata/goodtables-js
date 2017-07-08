@@ -1,8 +1,9 @@
 const axios = require('axios')
+const size = require('lodash/size')
 const clone = require('lodash/clone')
 const pickBy = require('lodash/pickBy')
 const mapKeys = require('lodash/mapKeys')
-const isString = require('lodash/isString')
+const isArray = require('lodash/isArray')
 const snakeCase = require('lodash/snakeCase')
 const {pop, poll} = require('./helpers')
 const config = require('./config')
@@ -28,7 +29,7 @@ class ApiClient {
     this._requestConfig = {headers: {Authorization: this._apiToken}}
   }
 
-  async addReport(source, options) {
+  async addReport(source, options={}) {
     options = clone(options)
 
     // Extract job config
@@ -41,7 +42,7 @@ class ApiClient {
     const orderFields = pop(options, 'orderFields')
 
     // Prepare source
-    if (isString(source)) source = [Object.assign(options, {source})]
+    if (!isArray(source)) source = [Object.assign(options, {source})]
     source = source.map(item => mapKeys(item, (value, key) => snakeCase(key)))
 
     // Prepare settings
@@ -51,11 +52,34 @@ class ApiClient {
     settings = pickBy(settings, value => value !== undefined)
     settings = mapKeys(settings, (value, key) => snakeCase(key))
 
+    // Extract files
+    const files = {}
+    const fileType = (process.env.USER_ENV === 'browser') ? File : Buffer
+    for (const item of source) {
+      for (const key of ['source', 'scheme']) {
+        if (item[key] instanceof fileType) {
+          const name = `file${size(files)}`
+          files[name] = item[key]
+          item[key] = name
+        }
+      }
+    }
+
+    // Prepare payload
+    let payload = {source, settings}
+    if (size(files) > 0) {
+      payload = new FormData()
+      payload.append('data', JSON.stringify({source, settings}))
+      for (const [name, file] of Object.entries(files)) {
+        payload.append(name, file)
+      }
+    }
+
     // Get job
     let job
     try {
       const url = `${this._apiUrl}/source/${this._apiSourceId}/job`
-      const response = await axios.post(url, {source, settings}, this._requestConfig)
+      const response = await axios.post(url, payload, this._requestConfig)
       job = response.data.job
     } catch (error) {
       throw new Error(`Can't create a job on API. Reason: "${error}"`)

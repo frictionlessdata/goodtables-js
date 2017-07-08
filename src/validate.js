@@ -5,7 +5,7 @@ const {pop} = require('./helpers')
 
 // Module API
 
-module.exports.validate = async (source, options) => {
+module.exports.validate = async (source, options={}) => {
   options = clone(options)
 
   // Extract api config
