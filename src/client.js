@@ -56,7 +56,7 @@ class ApiClient {
     const files = {}
     const fileType = (process.env.USER_ENV === 'browser') ? File : Buffer
     for (const item of source) {
-      for (const key of ['source', 'scheme']) {
+      for (const key of ['source', 'schema']) {
         if (item[key] instanceof fileType) {
           const name = `file${size(files)}`
           files[name] = item[key]
