@@ -5,7 +5,7 @@
 [![NPM](https://img.shields.io/npm/v/goodtables.svg)](https://www.npmjs.com/package/goodtables)
 [![Gitter](https://img.shields.io/gitter/room/frictionlessdata/chat.svg)](https://gitter.im/frictionlessdata/chat)
 
-An API wrapper for a goodtables.io service. goodtables.io is an open source web service for validating tabular data sources.
+An API wrapper for a goodtables.io, an open source web service for validating tabular data sources ([DEMO](https://frictionlessdata.github.io/goodtables-js/)).
 
 ## Features
 
