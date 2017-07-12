@@ -1,4 +1,4 @@
-# goodtables.js
+# goodtables-js
 
 [![Travis](https://travis-ci.org/frictionlessdata/tableschema-js.svg?branch=master)](https://travis-ci.org/frictionlessdata/goodtables-js)
 [![Coveralls](https://coveralls.io/repos/github/frictionlessdata/goodtables-js/badge.svg?branch=master)](https://coveralls.io/github/frictionlessdata/goodtables-js?branch=master)
@@ -46,30 +46,46 @@ const report = await goodtables.validate(source, options)
 
 ## Documentation
 
+The whole public API of this package is described here and follows semantic versioning rules. Everyting outside of this readme are private API and could be changed without any notification on any new version.
+
+This package is only wrapper around main `goodltabes-py` via goodtables.io API. Read full [documentation](https://github.com/frictionlessdata/goodtables-py#documentation) to learn the package in details. Please note that JavaScript version of the library uses `camelCase` naming for classes, arguments etc instead of `snake_case` in the Python counterpart.
+
 ### Validate
 
 This function gets a tabular dataset and returns a goodtables report.
 
 #### `async validate(source, options)`
 
-- `source (String/Object)`
-- `options`
-  - [API]
-  - `apiUrl`
-  - `apiToken`
-  - `apiSourceId`
-  - [Validation]
-  - `checks`
-  - `errorLimit`
-  - `tableLimit`
-  - `rowLimit`
-  - `inferSchema`
-  - `inferFields`
-  - `orderFields`
-  - [Source]
-  - `preset`
-  - `schema`
-- `(Object)` - returns a goodtables report
+- **[Dataset]**
+- `preset (String)` - dataset type could be `table` (default), `datapackage`, `nested` or custom. For the most cases preset will be inferred from the source.
+- **[Dataset:table]**
+- `source (url/Object/File)` - validation source containing data table
+- `schema (url/Object/File)` - Table Schema to validate data source against
+- `headers (Array/Number)` - headers list or source row number containing headers. If number is given for plain source headers row and all rows before will be removed and for keyed source no rows will be removed.
+- `scheme (String)` - source scheme with `file` as default. For the most cases scheme will be inferred from source. See [list of the supported schemes](https://github.com/frictionlessdata/tabulator-py#schemes).
+- `format (String)` - source format with `None` (detect) as default. For the most cases format will be inferred from source. See [list of the supported formats](https://github.com/frictionlessdata/tabulator-py#formats).
+- `encoding (String)` - source encoding with  `None` (detect) as default.
+- `skipRows (Number/String[])` - list of rows to skip by row number or row comment. Example: `skip_rows=[1, 2, '#', '//']` - rows 1, 2 and all rows started with `#` and `//` will be skipped.
+- `<name> (<type>)` - additional options supported by different schema and format. See [list of schema options](https://github.com/frictionlessdata/tabulator-py#schemes) and [list of format options](https://github.com/frictionlessdata/tabulator-py#schemes).
+- **[Dataset:datapackage]**
+- `source (url/Object/File)` - validation source containing data package descriptor
+- `<name> (<type>)` - options to pass to Data Package constructor
+- **[Dataset:nested]**
+- `source (Object[])` - list of dictionaries with keys named after source option names
+- **[Settings]**
+- `checks (String/Object)` - checks configuration
+- `inferSchema (Boolean)` - infer schema if not passed
+- `inferFields (Boolean)` - infer schema for columns not presented in schema
+- `orderFields (Boolean)` - order source columns based on schema fields order
+- `errorLimit (Number)` - error limit per table
+- `tableLimit (Number)` - table limit for dataset
+- `rowLimit (Number)` - row limit per table
+- **[API]**
+- `apiUrl (String)` - base url of goodtables.io API
+- `apiToken (String)` - access token for goodtables.io API
+- `apiSourceId (String)` - source identifier for goodtables.io API
+- **[Report]**
+- `(Object)` - returns a `goodtables` report
 
 ### Spec
 
@@ -83,9 +99,11 @@ Data quality spec is shipped with the library.
 
 > It's a provisional API. If you use it as a part of other program please pin concrete library version to your requirements file.
 
+Under the hood `validate` function uses `ApiClient` class. It could be useful for the end-user if there is a need to split API job creation and report getting  into two steps.
+
 #### `new ApiClient({apiUrl, apiToken, apiSourceId})`
-#### `apiClient.addReport(source, options)`
-#### `apiClient.getReport(apiJobId)`
+#### `async apiClient.addReport(source, options)`
+#### `async apiClient.getReport(apiJobId)`
 
 ## Contributing
 
