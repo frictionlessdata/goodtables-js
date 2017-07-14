@@ -56,10 +56,9 @@ This function gets a tabular dataset and returns a goodtables report.
 
 #### `async validate(source, options)`
 
-- **[Dataset]**
-- `preset (String)` - dataset type could be `table` (default), `datapackage`, `nested` or custom. For the most cases preset will be inferred from the source.
-- **[Dataset:table]**
+- **[Arguments - for `table` preset]**
 - `source (url/Object/File)` - validation source containing data table
+- `preset (String)` - dataset type could be `table` (default), `datapackage`, `nested` or custom. For the most cases preset will be inferred from the source.
 - `schema (url/Object/File)` - Table Schema to validate data source against
 - `headers (Array/Number)` - headers list or source row number containing headers. If number is given for plain source headers row and all rows before will be removed and for keyed source no rows will be removed.
 - `scheme (String)` - source scheme with `file` as default. For the most cases scheme will be inferred from source. See [list of the supported schemes](https://github.com/frictionlessdata/tabulator-py#schemes).
@@ -67,12 +66,14 @@ This function gets a tabular dataset and returns a goodtables report.
 - `encoding (String)` - source encoding with  `None` (detect) as default.
 - `skipRows (Number/String[])` - list of rows to skip by row number or row comment. Example: `skip_rows=[1, 2, '#', '//']` - rows 1, 2 and all rows started with `#` and `//` will be skipped.
 - `<name> (<type>)` - additional options supported by different schema and format. See [list of schema options](https://github.com/frictionlessdata/tabulator-py#schemes) and [list of format options](https://github.com/frictionlessdata/tabulator-py#schemes).
-- **[Dataset:datapackage]**
+- **[Arguments - for `datapackage` preset]**
 - `source (url/Object/File)` - validation source containing data package descriptor
+- `preset (String)` - dataset type could be `table` (default), `datapackage`, `nested` or custom. For the most cases preset will be inferred from the source.
 - `<name> (<type>)` - options to pass to Data Package constructor
-- **[Dataset:nested]**
+- **[Arguments - for `nested` preset]**
 - `source (Object[])` - list of dictionaries with keys named after source option names
-- **[Settings]**
+- `preset (String)` - dataset type could be `table` (default), `datapackage`, `nested` or custom. For the most cases preset will be inferred from the source.
+- **[Arguments]**
 - `checks (String/Object)` - checks configuration
 - `inferSchema (Boolean)` - infer schema if not passed
 - `inferFields (Boolean)` - infer schema for columns not presented in schema
@@ -80,11 +81,12 @@ This function gets a tabular dataset and returns a goodtables report.
 - `errorLimit (Number)` - error limit per table
 - `tableLimit (Number)` - table limit for dataset
 - `rowLimit (Number)` - row limit per table
-- **[API]**
 - `apiUrl (String)` - base url of goodtables.io API
 - `apiToken (String)` - access token for goodtables.io API
 - `apiSourceId (String)` - source identifier for goodtables.io API
-- **[Report]**
+- **[Raises]**
+- `(Error)` - raise on any non-tabular error
+- **[Returns]**
 - `(Object)` - returns a `goodtables` report
 
 ### Spec
