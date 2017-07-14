@@ -54,7 +54,7 @@ class ApiClient {
 
     // Extract files
     const files = {}
-    const fileType = (process.env.USER_ENV === 'browser') ? File : Buffer
+    const fileType = (typeof File !== 'undefined') ? File : Buffer
     for (const item of source) {
       for (const key of ['source', 'schema']) {
         if (item[key] instanceof fileType) {
