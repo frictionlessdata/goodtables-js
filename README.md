@@ -121,7 +121,11 @@ $ npm run test
 
 Here described only breaking and the most important changes. The full changelog could be found in nicely formatted [commit history](https://github.com/frictionlessdata/goodtables-js/commits/master).
 
-### v0.7
+### v1.0
+
+First stable realese.
+
+### [v0.7](https://github.com/frictionlessdata/goodtables-js/tree/v0.7.0)
 
 New functionality added:
 - `source` and `schema` now could be a `File` object in browser to allow file uploading
