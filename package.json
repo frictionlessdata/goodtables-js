@@ -106,11 +106,11 @@
       "url": "http://www.openspending.org/"
     }
   ],
-  "homepage": "https://github.com/okfn/goodtables-js",
-  "bugs": "https://github.com/okfn/goodtables-js/issues",
+  "homepage": "https://github.com/frictionlessdata/goodtables-js",
+  "bugs": "https://github.com/frictionlessdata/goodtables-js/issues",
   "repository": {
     "type": "git",
-    "url": "https://github.com/okfn/goodtables-js.git"
+    "url": "https://github.com/frictionlessdata/goodtables-js.git"
   },
   "license": "MIT"
 }
