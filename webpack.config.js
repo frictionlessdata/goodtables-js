@@ -13,6 +13,7 @@ let webpackConfig = {
     loaders: [
       { test: /\.json$/, loader: 'json-loader' },
       { test: /\.js$/, loaders: ['babel-loader'], exclude: /node_modules/ },
+      { test: require.resolve('chai-as-promised'), loaders: ['babel-loader'] },
     ]
   },
   output: {

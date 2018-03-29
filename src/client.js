@@ -93,7 +93,7 @@ class ApiClient {
 
     // Get report
     try {
-      report = await poll({seconds: 1, attempts: 10}, async () => {
+      report = await poll({seconds: 3, attempts: 60}, async () => {
         const url = `${this._apiUrl}/source/${this._apiSourceId}/job/${apiJobId}`
         const response = await axios.get(url, this._requestConfig)
         const job = response.data.job
