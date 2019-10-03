@@ -1,6 +1,6 @@
 {
   "name": "goodtables",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "An API wrapper for a goodtables.io service. goodtables.io is an open source web service for validating tabular data sources.",
   "keywords": [
     "data package",
