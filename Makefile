@@ -1,6 +1,14 @@
-.PHONY: all src/spec.json
+.PHONY: all list templates
 
-all: src/spec.json
 
-src/spec.json:
-	wget -O src/spec.json -q https://raw.githubusercontent.com/frictionlessdata/data-quality-spec/master/spec.json
+MAINTAINER := $(shell head -n 1 MAINTAINER.md)
+
+
+all: list
+
+list:
+	@grep '^\.PHONY' Makefile | cut -d' ' -f2- | tr ' ' '\n'
+
+templates:
+	sed -i -E "s/@(\w*)/@$(MAINTAINER)/" .github/issue_template.md
+	sed -i -E "s/@(\w*)/@$(MAINTAINER)/" .github/pull_request_template.md
