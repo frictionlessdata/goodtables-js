@@ -107,25 +107,25 @@ Here described only breaking and the most important changes. The full changelog 
 
 First stable realese.
 
-#### [v0.7](https://github.com/frictionlessdata/goodtables-js/tree/v0.7.0)
+#### v0.7
 
 New functionality added:
 - `source` and `schema` now could be a `File` object in browser to allow file uploading
 
-#### [v0.6](https://github.com/frictionlessdata/goodtables-js/tree/v0.6.0)
+#### v0.6
 
 New provisional API added:
 - published `ApiClient` class
 
-#### [v0.5](https://github.com/frictionlessdata/goodtables-js/tree/v0.5.0)
+#### v0.5
 
 New API added:
 - published data quality spec as `spec`
 
-#### [v0.4](https://github.com/frictionlessdata/goodtables-js/tree/v0.4.0)
+#### v0.4
 
 This version includes breaking changes and now uses `goodtables.io/api` as a backend.
 
-#### [v0.3](https://github.com/frictionlessdata/goodtables-js/tree/v0.3.0)
+#### v0.3
 
 This version uses `goodtables-web` service as a backend.
