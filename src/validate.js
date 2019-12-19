@@ -5,6 +5,11 @@ const {pop} = require('./helpers')
 
 // Module API
 
+/**
+ * Validate
+ *
+ * See `goodtables-py`
+ */
 module.exports.validate = async (source, options={}) => {
   options = clone(options)
 

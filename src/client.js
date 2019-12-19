@@ -11,6 +11,9 @@ const config = require('./config')
 
 // Module API
 
+/**
+ * APIClient
+ */
 class ApiClient {
 
   // Public

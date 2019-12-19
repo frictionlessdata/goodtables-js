@@ -1,6 +1,6 @@
 require('babel-polyfill')
-const {ApiClient} = require('./client')
-const {validate} = require('./validate')
+const { ApiClient } = require('./client')
+const { validate } = require('./validate')
 const spec = require('./spec.json')
 
 
