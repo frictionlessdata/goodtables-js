@@ -54,9 +54,8 @@ Let's start with a simple example:
 ```js
 const source = '<SOURCE_URL>'
 const options = {
-  apiUrl: 'https://goodtables.io/api',
-  apiToken: '<API_TOKEN>',
-  apiSourceId: '<API_SOURCE_ID>',
+  // any goodtables options e.g.
+  skipChecks=['missing-header'],
 }
 const report = await goodtables.validate(source, options)
 ```

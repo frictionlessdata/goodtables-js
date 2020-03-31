@@ -17,15 +17,9 @@ class ApiClient {
   // Public
 
   constructor({ apiUrl, apiToken, apiSourceId }) {
-    // Validate params
-    if (!apiToken || !apiSourceId) {
-      throw new Error('Options "apiToken" and "apiSourceId" are required')
-    }
-
-    // Assign params
     this._apiUrl = apiUrl || config.DEFAULT_API_URL
-    this._apiToken = apiToken
-    this._apiSourceId = apiSourceId
+    this._apiToken = apiToken || config.DEFAULT_API_TOKEN
+    this._apiSourceId = apiSourceId || config.DEFAULT_API_SOURCE_ID
     this._requestConfig = { headers: { Authorization: this._apiToken } }
   }
 
