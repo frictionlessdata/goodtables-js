@@ -102,29 +102,10 @@ $ npm run test
 
 Here described only breaking and the most important changes. The full changelog could be found in nicely formatted [commit history](https://github.com/frictionlessdata/goodtables-js/commits/master).
 
+#### v1.1
+
+- Added default credentials
+
 #### v1.0
 
-First stable realese.
-
-#### v0.7
-
-New functionality added:
-- `source` and `schema` now could be a `File` object in browser to allow file uploading
-
-#### v0.6
-
-New provisional API added:
-- published `ApiClient` class
-
-#### v0.5
-
-New API added:
-- published data quality spec as `spec`
-
-#### v0.4
-
-This version includes breaking changes and now uses `goodtables.io/api` as a backend.
-
-#### v0.3
-
-This version uses `goodtables-web` service as a backend.
+- First stable realese
