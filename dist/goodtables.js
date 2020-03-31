@@ -4483,6 +4483,10 @@ var config = __webpack_require__(222);
 
 // Module API
 
+/**
+ * APIClient
+ */
+
 var ApiClient = function () {
 
   // Public
@@ -7111,6 +7115,13 @@ var _require2 = __webpack_require__(140),
     pop = _require2.pop;
 
 // Module API
+
+/**
+ * Validate
+ *
+ * See `goodtables-py`
+ */
+
 
 module.exports.validate = function () {
   var _ref = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(source) {

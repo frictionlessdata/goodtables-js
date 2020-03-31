@@ -5,9 +5,8 @@ const pickBy = require('lodash/pickBy')
 const mapKeys = require('lodash/mapKeys')
 const isArray = require('lodash/isArray')
 const snakeCase = require('lodash/snakeCase')
-const {pop, poll} = require('./helpers')
+const { pop, poll } = require('./helpers')
 const config = require('./config')
-
 
 // Module API
 
@@ -15,11 +14,9 @@ const config = require('./config')
  * APIClient
  */
 class ApiClient {
-
   // Public
 
-  constructor({apiUrl, apiToken, apiSourceId}) {
-
+  constructor({ apiUrl, apiToken, apiSourceId }) {
     // Validate params
     if (!apiToken || !apiSourceId) {
       throw new Error('Options "apiToken" and "apiSourceId" are required')
@@ -29,10 +26,10 @@ class ApiClient {
     this._apiUrl = apiUrl || config.DEFAULT_API_URL
     this._apiToken = apiToken
     this._apiSourceId = apiSourceId
-    this._requestConfig = {headers: {Authorization: this._apiToken}}
+    this._requestConfig = { headers: { Authorization: this._apiToken } }
   }
 
-  async addReport(source, options={}) {
+  async addReport(source, options = {}) {
     options = clone(options)
 
     // Extract job config
@@ -45,19 +42,25 @@ class ApiClient {
     const orderFields = pop(options, 'orderFields')
 
     // Prepare source
-    if (!isArray(source)) source = [Object.assign(options, {source})]
-    source = source.map(item => mapKeys(item, (value, key) => snakeCase(key)))
+    if (!isArray(source)) source = [Object.assign(options, { source })]
+    source = source.map((item) => mapKeys(item, (value, key) => snakeCase(key)))
 
     // Prepare settings
-    let settings = {checks,
-      errorLimit, tableLimit, rowLimit,
-      inferSchema, inferFields, orderFields}
-    settings = pickBy(settings, value => value !== undefined)
+    let settings = {
+      checks,
+      errorLimit,
+      tableLimit,
+      rowLimit,
+      inferSchema,
+      inferFields,
+      orderFields,
+    }
+    settings = pickBy(settings, (value) => value !== undefined)
     settings = mapKeys(settings, (value, key) => snakeCase(key))
 
     // Extract files
     const files = {}
-    const fileType = (typeof File !== 'undefined') ? File : Buffer
+    const fileType = typeof File !== 'undefined' ? window.File : Buffer
     for (const item of source) {
       for (const key of ['source', 'schema']) {
         if (item[key] instanceof fileType) {
@@ -69,10 +72,10 @@ class ApiClient {
     }
 
     // Prepare payload
-    let payload = {source, settings}
+    let payload = { source, settings }
     if (size(files) > 0) {
-      payload = new FormData()
-      payload.append('data', JSON.stringify({source, settings}))
+      payload = new window.FormData()
+      payload.append('data', JSON.stringify({ source, settings }))
       for (const [name, file] of Object.entries(files)) {
         payload.append(name, file)
       }
@@ -96,7 +99,7 @@ class ApiClient {
 
     // Get report
     try {
-      report = await poll({seconds: 3, attempts: 60}, async () => {
+      report = await poll({ seconds: 3, attempts: 60 }, async () => {
         const url = `${this._apiUrl}/source/${this._apiSourceId}/job/${apiJobId}`
         const response = await axios.get(url, this._requestConfig)
         const job = response.data.job
@@ -113,6 +116,5 @@ class ApiClient {
 
     return report
   }
-
 }
 module.exports.ApiClient = ApiClient
