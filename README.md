@@ -7,6 +7,8 @@
 
 An API wrapper for a goodtables.io, an open source web service for validating tabular data sources ([DEMO](https://frictionlessdata.github.io/goodtables-js/)).
 
+> :warning: **If you are using the default credentials**: Be aware that history of your validations will be visible to other library users! Register on https://goodtables.io to get your private API key
+
 ## Features
 
  - `validate` function to validate tabular data and output a `goodtables` report
